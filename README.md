@@ -4,7 +4,7 @@ Performing trend analysis of overarching trends in flight delays by delay type, 
 
 Oracle Database
 
-JavaScript or Python?
+JavaScript and Python
 
 Project consists of 5 phases
   - Phase I: Requirements Analysis
