@@ -1,6 +1,6 @@
 # DBProject
 
-Post GRESQL or Oracle?
+Oracle Database
 JavaScript or Python?
 
 Trend Ananlysis via DB Queries - focus on the identification, analysis, interpretation, and visualization of past trends in historical real-world data sets by sophisticated database queries
