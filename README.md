@@ -1,4 +1,4 @@
-# DBProject
+# Database Project
 
 Performing trend analysis of overarching trends in flight delays by delay type, airline, departing airport, etc.
 
