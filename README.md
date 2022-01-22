@@ -1,10 +1,10 @@
 # DBProject
 
+Performing trend analysis of overarching trends in flight delays by delay type, airline, departing airport, etc.
+
 Oracle Database
 
 JavaScript or Python?
-
-Trend Ananlysis via DB Queries - focus on the identification, analysis, interpretation, and visualization of past trends in historical real-world data sets by sophisticated database queries
 
 Project consists of 5 phases
   - Phase I: Requirements Analysis
@@ -17,8 +17,3 @@ Project consists of 5 phases
   - Phase III: Database Schema Construction
   - Phase IV: Project Software Implementation
   - Phase V: Project Software Demonstration
-  
-Project Ideas:
-  - Cyber security data analysis
-  - 3D Data Analysis
-  - Income, time, and ???
