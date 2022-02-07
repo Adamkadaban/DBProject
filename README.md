@@ -18,7 +18,7 @@ https://transtats.bts.gov/DL_SelectFields.asp?gnoyr_VQ=FGJ&QO_fu146_anzr=b0-gvzr
 
 
 ### Database Model:
-![Database Model](mod.png)
+![Database Model](docs/mod.png)
 
 
 ### Tasks:
