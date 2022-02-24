@@ -17,7 +17,7 @@ export const Home = () => {
           <div className="flex flex-col gap-4 md:grid md:grid-cols-3">
             <Link
               className="border-2 border-gray-200 flex flex-col rounded p-4 cursor-pointer ease-out duration-300 hover:shadow-lg"
-              to="/"
+              to="/GeospatialAnalysis"
             >
               <div className="flex flex-row justify-between items-center">
                 <h1 className="text-left text-xl text-blue-500">
@@ -35,7 +35,7 @@ export const Home = () => {
             </Link>
             <Link
               className="border-2 border-gray-200 flex flex-col rounded p-4 cursor-pointer ease-out duration-300 hover:shadow-lg"
-              to="/"
+              to="/FlightOptimization"
             >
               <div className="flex flex-row justify-between items-center">
                 <h1 className="text-left text-xl text-blue-500">
@@ -53,7 +53,7 @@ export const Home = () => {
             </Link>
             <Link
               className="border-2 border-gray-200 flex flex-col rounded p-4 cursor-pointer ease-out duration-300 hover:shadow-lg"
-              to="/"
+              to="/TimeSeriesAnalysis"
             >
               <div className="flex flex-row justify-between items-center">
                 <h1 className="text-left text-xl text-blue-500">
