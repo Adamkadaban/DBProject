@@ -1,3 +1,4 @@
+#!/bin/python3
 from kaggle.api.kaggle_api_extended import KaggleApi
 from zipfile import ZipFile
 import pandas as pd
@@ -10,8 +11,9 @@ def download_dataset(
     api: KaggleApi,
     file_name: str,
     dataset: str = DATASET,
-    path: str = os.getcwd() + "\\temp"
+    path: str = os.getcwd() + "/temp"
 ) -> None:
+    print("Internal -- Started Downloading")
     """Downloads dataset from Kaggle and extracts the file"""
     api.dataset_download_file(
         dataset = dataset, 
@@ -19,8 +21,9 @@ def download_dataset(
         path = path,
         quiet = False
     )
+    print("Internal -- Finished downloading")
 
-    zf = ZipFile(f"{path}\\{file_name}.zip")
+    zf = ZipFile(f"{path}/{file_name}.zip")
     zf.extractall(path)
     zf.close()
 
@@ -30,8 +33,8 @@ def delete_dataset(
 ) -> None:
     """Delete downloaded file"""
     try:
-        os.remove(os.getcwd() + f"\\temp\\{file_name}") # Delete the file
-        os.remove(os.getcwd() + f"\\temp\\{file_name}.zip") # Delete the zip
+        os.remove(os.getcwd() + f"/temp/{file_name}") # Delete the file
+        os.remove(os.getcwd() + f"/temp/{file_name}.zip") # Delete the zip
     except:
         print("File not deleted")
 
@@ -132,8 +135,11 @@ if __name__ == "__main__":
 
     for file in FILES:
         download_dataset(api, file)
+        print("Finished downloading")
         data = read_dataset(file)
+        print("Finished reading data")
         new_flight_data = create_flight_table(data, flights)
+        print("Made the table")
         flights += len(new_flight_data)
         flight_table = pd.concat([flight_table, new_flight_data])
         delete_dataset(file)
