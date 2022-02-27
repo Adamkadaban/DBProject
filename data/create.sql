@@ -1,0 +1,39 @@
+CREATE TABLE Airport
+(AirportCode INTEGER PRIMARY KEY,
+Name VARCHAR2(50) NOT NULL,
+StateCode INTEGER NOT NULL,
+
+FOREIGN KEY (StateCode) REFERENCES State (StateCode))
+
+CREATE TABLE State
+(StateCode INTEGER PRIMARY KEY,
+Name VARCHAR2(50) NOT NULL)
+
+CREATE TABLE Airline
+(CarrierCode INTEGER PRIMARY KEY,
+Name VARCHAR2(50) NOT NULL)
+
+CREATE TABLE Date
+(FlightDate DATE PRIMARY KEY,
+DayOfWeek INTEGER NOT NULL,
+Quarter INTEGER NOT NULL)
+
+CREATE TABLE Flight
+(FlightID INTEGER PRIMARY KEY,
+AirportCode INTEGER NOT NULL,
+CarrierCode INTEGER NOT NULL,
+FlightDate DATE NOT NULL,
+Canceled INTEGER ,
+Diverted INTEGER ,
+AirTime INTEGER NOT NULL,
+Distance INTEGER NOT NULL,
+CarrierDelay INTEGER ,
+WeatherDelay INTEGER ,
+NASDelay INTEGER ,
+SecurityDelay INTEGER ,
+LateAircraftDelay INTEGER 
+
+FOREIGN KEY (AirportCode) REFERENCES Airport(AirportCode)
+FOREIGN KEY (CarrierCode) REFERENCES Airline(CarrierCode)
+FOREIGN KEY (FlightDate) REFERENCES Date(FlightDate)
+)
