@@ -13,8 +13,8 @@ def download_dataset(
     dataset: str = DATASET,
     path: str = os.getcwd() + "/temp"
 ) -> None:
-    print("Internal -- Started Downloading")
     """Downloads dataset from Kaggle and extracts the file"""
+    print("Internal -- Started Downloading")
     api.dataset_download_file(
         dataset = dataset, 
         file_name = file_name, 
@@ -50,23 +50,23 @@ def read_dataset(
 
 def create_base_tables() -> None:
     """Creates the following tables: 1) Airport 2) State 3) Airline 4) Date"""
-    # Date Table
-    date_table = pd.DataFrame(columns = ["Date", "Quarter", "DayOfWeek"])
-    date_table["Date"] = pd.date_range(start = "1/1/2010", end = "12/31/2020")
-    date_table["DayOfWeek"] = date_table["Date"].dt.weekday
-    date_table["Quarter"] = date_table["Date"].dt.quarter
+    # FlightDate Table
+    date_table = pd.DataFrame(columns = ["TakeOffDate", "DayOfWeek", "Quarter"])
+    date_table["TakeOffDate"] = pd.date_range(start = "1/1/2010", end = "12/31/2020")
+    date_table["DayOfWeek"] = date_table["TakeOffDate"].dt.weekday
+    date_table["Quarter"] = date_table["TakeOffDate"].dt.quarter
 
     # State Table
     state_table = pd.read_csv("raw_files/L_STATE_ABR_AVIATION.csv").rename(
-        columns={ "Code": "StateCode", "Description": "Name" })
+        columns={ "Code": "StateCode", "Description": "Name" }).dropna()
 
     # Airline Table
     airline_table = pd.read_csv("raw_files/L_UNIQUE_CARRIERS.csv").rename(
-        columns={ "Code": "CarrierCode", "Description": "Name" })
+        columns={ "Code": "CarrierCode", "Description": "Name" }).dropna()
 
     # Airport Table
     airport_table = pd.read_csv("raw_files/L_AIRPORT_ID.csv").rename(
-        columns={ "Code": "AirportCode", "Description": "Name" })
+        columns={ "Code": "AirportCode", "Description": "Name" }).dropna()
 
     airport_table["StateCode"] = airport_table["Name"].apply(lambda x: x.split(":")[0][-2:])
 
@@ -74,7 +74,7 @@ def create_base_tables() -> None:
         state_table, how = "inner", on = "StateCode", suffixes = ("", "_r")
         )[["AirportCode", "Name", "StateCode"]]
 
-    date_table.to_csv("processed_files/Date.csv", index = False)
+    date_table.to_csv("processed_files/FlightDate.csv", index = False)
     state_table.to_csv("processed_files/State.csv", index = False)
     airport_table.to_csv("processed_files/Airport.csv", index = False)
     airline_table.to_csv("processed_files/Airline.csv", index = False)
@@ -110,6 +110,7 @@ def create_flight_table(
         }
     )
     flight_table = flight_table.reset_index().rename(columns = {"index": "FlightID"})
+    flight_table["CarrierCode"] = flight_table["CarrierCode"].str.replace("\'", '')
     flight_table["FlightID"] = flight_table["FlightID"] + id_incrementer
     return flight_table
 
