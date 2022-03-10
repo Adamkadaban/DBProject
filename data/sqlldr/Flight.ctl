@@ -1,0 +1,22 @@
+load data 
+infile 'Flight.csv' "str '\r\n'"
+append
+into table FLIGHT
+fields terminated by ','
+OPTIONALLY ENCLOSED BY '"' AND '"'
+trailing nullcols
+           ( FLIGHTID INTEGER EXTERNAL,             
+						 TAKEOFFDATE DATE "RRRR-MM-DD",
+             CARRIERCODE CHAR(10),
+						 DEPARTINGAIRPORTCODE INTEGER EXTERNAL,
+						 ARRIVINGAIRPORTCODE INTEGER EXTERNAL,
+             CANCELED INTEGER EXTERNAL,
+             DIVERTED INTEGER EXTERNAL,
+             AIRTIME INTEGER EXTERNAL,
+             DISTANCE INTEGER EXTERNAL,
+             CARRIERDELAY INTEGER EXTERNAL,
+             WEATHERDELAY INTEGER EXTERNAL,
+             NASDELAY INTEGER EXTERNAL,
+             SECURITYDELAY INTEGER EXTERNAL,
+             LATEAIRCRAFTDELAY INTEGER EXTERNAL
+           )
