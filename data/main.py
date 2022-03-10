@@ -82,7 +82,8 @@ def create_base_tables() -> None:
 
 def create_flight_table(
     data: pd.DataFrame,
-    id_incrementer: int
+    id_incrementer: int,
+    n: int
 ) -> pd.DataFrame:
     """Creates the flight tables"""
     COLUMNS = [
@@ -109,7 +110,9 @@ def create_flight_table(
             "LATE_AIRCRAFT_DELAY": "LateAircraftDelay"
         }
     )
+    flight_table = flight_table.iloc[::n, :]
     flight_table = flight_table.reset_index().rename(columns = {"index": "FlightID"})
+    flight_table["FlightID"] = range(len(flight_table))
     flight_table["CarrierCode"] = flight_table["CarrierCode"].str.replace("\'", '')
     flight_table["FlightID"] = flight_table["FlightID"] + id_incrementer
     return flight_table
@@ -139,7 +142,7 @@ if __name__ == "__main__":
         print("Finished downloading")
         data = read_dataset(file)
         print("Finished reading data")
-        new_flight_data = create_flight_table(data, flights)
+        new_flight_data = create_flight_table(data, flights, 5)
         print("Made the table")
         flights += len(new_flight_data)
         flight_table = pd.concat([flight_table, new_flight_data])
