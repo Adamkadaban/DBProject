@@ -24,7 +24,7 @@ def getQueryResult(userInput):
 
 
 	dsn_tns = cx_Oracle.makedsn('oracle.cise.ufl.edu', '1521', 'orcl')
-	conn = cx_Oracle.connect(user=r'ORACLE_USERNAME', password='ORACLE_PASSWD', dsn=dsn_tns)
+	conn = cx_Oracle.connect(user=ORACLE_USERNAME, password=ORACLE_PASSWD, dsn=dsn_tns)
 	cursor = conn.cursor()
 	
 	with open(queryFile) as fin:
