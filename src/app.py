@@ -7,7 +7,6 @@ import cx_Oracle
 import json
 import pickle
 import re
-import os
 
 
 with open('creds.config') as fin:
