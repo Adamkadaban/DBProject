@@ -14,8 +14,14 @@ with open('creds.config') as fin:
 	ORACLE_USERNAME = fin.readline().rstrip()
 	ORACLE_PASSWD = fin.readline().rstrip()
 
+queryCache = {}
+
 
 def getQueryResult(userInput):
+	cacheKey = str(userInput)
+	if cacheKey in queryCache:
+		return queryCache[cacheKey]
+
 	queryType = userInput['queryType']
 	if queryType == 2:
 		state = userInput['state']
@@ -38,6 +44,7 @@ def getQueryResult(userInput):
 	res = cursor.execute(query)
 	column_names = [i[0] for i in cursor.description]
 	json_out =  [dict(zip(column_names, i)) for i in res]
+	queryCache[cacheKey] = json_out
 	return json_out
 
 
@@ -52,14 +59,16 @@ def api():
 if __name__ == "__main__":
 	try:
 		with open('cachedResults', 'rb') as fin:
-			getQueryResult.cache = pickle.load(fin)
-		print("Loaded file")
+			queryCache = pickle.load(fin)
+		print("[*] Loaded file")
 	except FileNotFoundError:
 		pass
 	try:
 		app.run()
 	except KeyboardInterrupt:
 		pass
+
+	# print(queryCache)
 	with open('cachedResults', 'wb') as fout:
-		pickle.dump(getQueryResult.cache, fout, pickle.HIGHEST_PROTOCOL)
-	print("Wrote cache to file")
+		pickle.dump(queryCache, fout, pickle.HIGHEST_PROTOCOL)
+	print("[*] Wrote cache to file")
