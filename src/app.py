@@ -2,45 +2,62 @@
 import os
 import re
 
-from flask import Flask, abort, request, send_from_directory, send_file, render_template, redirect
-from IPy import IP
-import mimetype
-import store
+from flask import Flask, abort, request, send_from_directory, send_file, render_template, redirect, jsonify
+import cx_Oracle
+import json
+import pickle
+import re
+import os
 
-comments = []
+ORACLE_USERNAME = os.environ('ORACLE_USERNAME')
+ORACLE_PASSWD = os.environ('ORACLE_PASSWD')
 
-def is_subdir(p1, p2):
-	if os.path.isdir(p2):
-		p1, p2 = os.path.realpath(p1), os.path.realath(p2)
-		return p1 == p2 or p1.startswith(p2 + os.sep)
-	else:
-		return False
+
+def getQueryResult(userInput):
+	queryType = userInput['queryType']
+	if queryType == 2:
+		state = userInput['state']
+		month = userInput['month']
+	queryFile = f'./queries/query{queryType}.sql'
+
+
+	dsn_tns = cx_Oracle.makedsn('oracle.cise.ufl.edu', '1521', 'orcl')
+	conn = cx_Oracle.connect(user=r'ORACLE_USERNAME', password='ORACLE_PASSWD', dsn=dsn_tns)
+	cursor = conn.cursor()
+	
+	with open(queryFile) as fin:
+		query = fin.read()
+		query = re.sub(';', '', query)
+
+	if queryType == 2:
+		query = re.sub('<month>', str(month), query)
+		query = re.sub('<State>', state, query)
+
+	res = cursor.execute(query)
+	column_names = [i[0] for i in cursor.description]
+	json_out =  [dict(zip(column_names, i)) for i in res]
+	return json_out
+
 
 app = Flask(__name__)
-filestore = store.LocalStore()
 
-@app.route("/")
-def index():
-	return render_template('index.html')
-
-
-@app.route("/internal.html",methods=['GET','POST'])
-def internal():
-    ip =str( request.headers['X-Forwarded-For'].split(',')[0])
-    if is_local_ip(ip):
-        return render_template("internal.html", comments=comments, flag=flag1)
-    else:
-        return render_template("blocked.html",ip=ip),403
+@app.route("/api", methods=['POST'])
+def api():
+	userData = request.get_json(force=True)
+	return jsonify(getQueryResult(userData)), 200, {'ContentType':'application/json'} 
 
 
-@app.route("/<path:path>")
-def root(path):
-	staticDir = "/app/web/"
-	filePath = staticDir + path
+if __name__ == "__main__":
 	try:
-		if is_subdir(fpath, staticDir):
-			return filestore.read(filepath), {"Content-Type": mimetypes.guess_type(fpath)}
-		else:
-			return "Invalid path.", 404
-	except store.NotFound:
-		abort(404)
+		with open('cachedResults', 'rb') as fin:
+			getQueryResult.cache = pickle.load(fin)
+		print("Loaded file")
+	except FileNotFoundError:
+		pass
+	try:
+		app.run()
+	except KeyboardInterrupt:
+		pass
+	with open('cachedResults', 'wb') as fout:
+		pickle.dump(getQueryResult.cache, fout, pickle.HIGHEST_PROTOCOL)
+	print("Wrote cache to file")
