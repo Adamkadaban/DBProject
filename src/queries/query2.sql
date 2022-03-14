@@ -27,7 +27,7 @@ WITH all_data AS (
     LEFT JOIN Airport a ON f.DepartingAirportCode = a.AirportCode
     LEFT JOIN State s On a.StateCode = s.StateCode
     LEFT JOIN Airline aa ON f.CarrierCode = aa.CarrierCode
-    WHERE s.Name = "<State>"
+    WHERE s.Name = '<State>'
 ), all_data_filtered AS (
     SELECT 
         ad.Airport,
@@ -38,7 +38,7 @@ WITH all_data AS (
         AVG(ad.SecurityDelay) AS SecurityDelay,
         AVG(ad.LateAircraftDelay) AS LateAircraftDelay
     FROM all_data ad
-    WHERE EXTRACT(MONTH FROM ad.TakeOffDate) = "<month>"
+    WHERE EXTRACT(MONTH FROM ad.TakeOffDate) = <month>
     GROUP BY ad.AirportCode, ad.Airport, ad.CarrierCode, ad.Airline
     ORDER BY 3, 4, 5, 6, 7
 )
