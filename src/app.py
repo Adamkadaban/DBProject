@@ -2,12 +2,10 @@
 import os
 import re
 
-from flask import Flask, abort, request, send_from_directory, send_file, render_template, redirect, jsonify
-import cx_Oracle
-import json
-import pickle
-import re
-
+from flask import Flask, request, jsonify
+from cx_Oracle import makedsn, connect
+from pickle import load, dump, HIGHEST_PROTOCOL
+from re import sub
 
 with open('creds.config') as fin:
 	ORACLE_USERNAME = fin.readline().rstrip()
@@ -28,17 +26,17 @@ def getQueryResult(userInput):
 	queryFile = f'./queries/query{queryType}.sql'
 
 
-	dsn_tns = cx_Oracle.makedsn('oracle.cise.ufl.edu', '1521', 'orcl')
-	conn = cx_Oracle.connect(user=ORACLE_USERNAME, password=ORACLE_PASSWD, dsn=dsn_tns)
+	dsn_tns = makedsn('oracle.cise.ufl.edu', '1521', 'orcl')
+	conn = connect(user=ORACLE_USERNAME, password=ORACLE_PASSWD, dsn=dsn_tns)
 	cursor = conn.cursor()
 	
 	with open(queryFile) as fin:
 		query = fin.read()
-		query = re.sub(';', '', query)
+		query = sub(';', '', query)
 
 	if queryType == 2:
-		query = re.sub('<month>', str(month), query)
-		query = re.sub('<State>', state, query)
+		query = sub('<month>', str(month), query)
+		query = sub('<State>', state, query)
 
 	res = cursor.execute(query)
 	column_names = [i[0] for i in cursor.description]
@@ -58,9 +56,11 @@ def api():
 if __name__ == "__main__":
 	try:
 		with open('cachedResults', 'rb') as fin:
-			queryCache = pickle.load(fin)
+			queryCache = load(fin)
 		print("[*] Loaded file")
 	except FileNotFoundError:
+		pass
+	except EOFError:
 		pass
 	try:
 		app.run()
@@ -69,5 +69,5 @@ if __name__ == "__main__":
 
 	# print(queryCache)
 	with open('cachedResults', 'wb') as fout:
-		pickle.dump(queryCache, fout, pickle.HIGHEST_PROTOCOL)
+		dump(queryCache, fout, HIGHEST_PROTOCOL)
 	print("[*] Wrote cache to file")
