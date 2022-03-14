@@ -9,8 +9,10 @@ import pickle
 import re
 import os
 
-ORACLE_USERNAME = os.environ('ORACLE_USERNAME')
-ORACLE_PASSWD = os.environ('ORACLE_PASSWD')
+
+with open('creds.config') as fin:
+	ORACLE_USERNAME = fin.readline().rstrip()
+	ORACLE_PASSWD = fin.readline().rstrip()
 
 
 def getQueryResult(userInput):
