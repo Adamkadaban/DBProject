@@ -3,6 +3,7 @@ import os
 import re
 
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from cx_Oracle import makedsn, connect
 from pickle import load, dump, HIGHEST_PROTOCOL
 from re import sub
@@ -46,6 +47,7 @@ def getQueryResult(userInput):
 
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route("/api", methods=['POST'])
 def api():
