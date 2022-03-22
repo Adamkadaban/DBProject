@@ -1,7 +1,4 @@
 #!/bin/python3
-import os
-import re
-
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from cx_Oracle import makedsn, connect
@@ -52,6 +49,7 @@ CORS(app)
 @app.route("/api", methods=['POST'])
 def api():
 	userData = request.get_json(force=True)
+	print(userData)
 	return jsonify(getQueryResult(userData)), 200, {'ContentType':'application/json'} 
 
 
@@ -61,13 +59,13 @@ if __name__ == "__main__":
 			queryCache = load(fin)
 		print("[*] Loaded file")
 	except FileNotFoundError:
-		pass
+		print("[*] Cache not yet created. Making a new file")
 	except EOFError:
-		pass
+		print("[*] Cache is empty. Writing to Cache now.")
 	try:
 		app.run()
 	except KeyboardInterrupt:
-		pass
+		print("[*] Exiting app")
 
 	# print(queryCache)
 	with open('cachedResults', 'wb') as fout:
