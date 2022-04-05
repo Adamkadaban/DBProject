@@ -3,11 +3,18 @@ import os
 import re
 
 from flask import Flask, request, jsonify
-from cx_Oracle import makedsn, connect
+from cx_Oracle import makedsn, connect, init_oracle_client
 from pickle import load, dump, HIGHEST_PROTOCOL
 from re import sub
 
-with open('creds.config') as fin:
+try:
+	init_oracle_client(lib_dir='c:\Program Files\Oracle')
+except Exception as e:
+	print(e)
+	exit(-1)
+
+
+with open('creds.config.txt') as fin:
 	ORACLE_USERNAME = fin.readline().rstrip()
 	ORACLE_PASSWD = fin.readline().rstrip()
 
