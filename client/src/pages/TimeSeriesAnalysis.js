@@ -2,36 +2,12 @@ import React, { useState } from "react";
 import { Navbar } from "../components/Navbar";
 import { TrendLineChart } from "../components/TrendLineChart";
 import { useEffect } from "react";
-import { Query5TrendLine } from "../components/Query5TrendLine";
+import { Query5TrendLine } from "../components/Q5TrendLine";
+import {Query4TrendLine} from "../components/Q4TrendLine";
 
 
 export const TimeSeriesAnalysis = () => {
 
-  const defaultData = [
-    {
-      name: "Page A",
-      uv: 4000,
-      pv: 2400,
-      amt: 2400,
-    },
-  ];
-
-  const [data, setData] = useState(defaultData);
-
-  useEffect(() => {
-    fetch('/api', {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json; charset=UTF-8'
-      },
-      body: JSON.stringify({"queryType": 5})
-  })
-    .then(response =>
-      response.json().then(data => setData(data))
-    );
-    }, []);
-  
-  console.log(data)  
 
   const [tab, setTab] = useState(0);
   const tabNames = [
@@ -72,7 +48,7 @@ export const TimeSeriesAnalysis = () => {
         </div>
         <div className="mx-auto border-solid border-[0.1px] border-gray-300 rounded-md p-2 flex flex-col items-center h-96 w-full">
           <h1 className="pb-2 font-semibold text-lg">Trend: {tabNames[tab]}</h1>
-          <Query5TrendLine strokeWidth={4} queryData={data} />
+          <Query4TrendLine strokeWidth={4}/>
         </div>
         <div className="border-solid border-[0.1px] border-gray-300 rounded-md flex flex-col p-2">
           <h1 className="font-bold text-lg">Analysis</h1>

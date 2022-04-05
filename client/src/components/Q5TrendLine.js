@@ -4,6 +4,8 @@
  */
 
  import React from "react";
+ import { useState } from "react";
+ import { useEffect } from "react";
  import {
    LineChart,
    Line,
@@ -17,7 +19,23 @@
  
  
  
- export const Query5TrendLine = ({strokeWidth, queryData}) => {
+ export const Query5TrendLine = ({strokeWidth}) => {
+    const [data, setData] = useState([]);
+    
+    useEffect(() => {
+        fetch('/api', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json; charset=UTF-8'
+          },
+          body: JSON.stringify({"queryType": 5})
+      })
+        .then(response =>
+          response.json().then(data => setData(data))
+        );
+        }, []);
+      
+      console.log(data)  
  
    return (
      
@@ -25,7 +43,7 @@
        <LineChart
          width={800}
          height={300}
-         data = {queryData}
+         data = {data}
        >
          <CartesianGrid strokeDasharray="3 3" />
          <XAxis dataKey="FLIGHTYEAR" />
