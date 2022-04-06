@@ -4,7 +4,26 @@ import { TrendLineChart } from "../components/TrendLineChart";
 import { useEffect } from "react";
 import { Query5TrendLine } from "../components/Q5TrendLine";
 import {Query4TrendLine} from "../components/Q4TrendLine";
+import {Query3TrendLine} from "../components/Q3TrendLine";
+import {Query6TrendLine} from "../components/Q6TrendLine";
 
+ function switchFunction(tab){
+    switch(tab){
+      case 0:
+      return <Query3TrendLine strokeWidth={4}/>
+      break;
+      case 1:
+      return <Query4TrendLine strokeWidth={4}/>
+      break;
+      case 2:
+      return <Query4TrendLine strokeWidth={4}/>
+      break;
+      case 3:
+      return <Query5TrendLine strokeWidth={4}/>
+      break;
+    }
+
+ }
 
 export const TimeSeriesAnalysis = () => {
 
@@ -16,6 +35,7 @@ export const TimeSeriesAnalysis = () => {
     "Flight Delay by Delay Cause",
     "Departing : Arriving Delays",
   ];
+  
   return (
     <>
       <Navbar />
@@ -48,7 +68,11 @@ export const TimeSeriesAnalysis = () => {
         </div>
         <div className="mx-auto border-solid border-[0.1px] border-gray-300 rounded-md p-2 flex flex-col items-center h-96 w-full">
           <h1 className="pb-2 font-semibold text-lg">Trend: {tabNames[tab]}</h1>
-          <Query4TrendLine strokeWidth={4}/>
+          {tabNames[tab] == 'Flight Delays By Airline' && <Query3TrendLine strokeWidth={4}/>}
+          {tabNames[tab] == 'Flight Delay Duration' && <Query4TrendLine strokeWidth={4}/>}
+          {tabNames[tab] == 'Flight Delay by Delay Cause' && <Query5TrendLine strokeWidth={4}/>}
+          {tabNames[tab] == 'Departing : Arriving Delays' && <Query6TrendLine strokeWidth={4}/>}
+          
         </div>
         <div className="border-solid border-[0.1px] border-gray-300 rounded-md flex flex-col p-2">
           <h1 className="font-bold text-lg">Analysis</h1>
