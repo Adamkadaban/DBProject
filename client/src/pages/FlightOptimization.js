@@ -2,14 +2,18 @@ import React, { useState } from "react";
 import { states } from "../utils/constants";
 import { Navbar } from "../components/Navbar";
 import { arrayMove } from "react-sortable-hoc";
+import { formatData, getCities } from "../utils/helpers";
+import { ReactComponent as Drag } from "../icons/drag.svg";
 import { ReactComponent as Info } from "../icons/info.svg";
+import { FlightOption } from "../components/FlightOption";
 import { ReactComponent as Search } from "../icons/search.svg";
-import { TrendLineChart } from "../components/TrendLineChart";
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
-import { formatData, getCities, getMonth } from "../utils/helpers";
 
 const SortableItem = SortableElement(({ value }) => (
-  <li className="bg-gray-50 p-2 mb-1 text-gray-600">{value}</li>
+  <div className="bg-gray-50 p-2 mb-1 text-gray-600 flex flex-row items-center gap-3 cursor-pointer hover:bg-gray-100">
+    <Drag className="w-4 h-4" />
+    {value.name}
+  </div>
 ));
 
 const SortableList = SortableContainer(({ items }) => {
@@ -22,66 +26,25 @@ const SortableList = SortableContainer(({ items }) => {
   );
 });
 
-export const FlightOption = ({
-  rank,
-  airline,
-  airport,
-  city,
-  lateAircraftDelay,
-  weatherDelay,
-  securityDelay,
-  nasDelay,
-  carrierDelay,
-  totalDelay,
-  delays,
-}) => {
-  const month = getMonth();
-  return (
-    <div className="border-solid border-[0.1px] border-gray-300 rounded-md p-2 flex flex-row justify-between items-center hover:shadow-md w-full h-fit">
-      <div className="flex flex-col w-1/2 pl-4 p-1">
-        <div className="text-gray-800 text-lg font-semibold pb-2">
-          {rank}. {airline}
-        </div>
-        <div className="text-gray-800 text-sm">
-          {airport} - {city}
-        </div>
-        <div className="pt-2 underline">Average Stats for {month}</div>
-        <ul className="text-gray-500">
-          <li>- Late Aircraft Delay: {lateAircraftDelay} min.</li>
-          <li>- Weather Delay: {weatherDelay} min.</li>
-          <li>- Security Delay: {securityDelay} min.</li>
-          <li>- NAS Delay: {nasDelay} min.</li>
-          <li>- Carrier Delay: {carrierDelay} min.</li>
-          <li>- Total Delay: {totalDelay} min.</li>
-        </ul>
-      </div>
-      <TrendLineChart
-        strokeWidth={2}
-        data={delays}
-        xkey={"Month"}
-        ykeys={["TotalDelay"]}
-      />
-    </div>
-  );
-};
-
 export const FlightOptimization = () => {
   const [data, setData] = useState({});
-  const [cities, setCities] = useState([]);
   const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [cities, setCities] = useState([]);
   const [placeholder, setPlaceholder] = useState("Select a state to find data");
 
   const [sortingParams, setSortingParams] = useState([
-    "Late Aircraft Delay",
-    "Weather Delay",
-    "NAS Delay Delay",
-    "Security Delay",
-    "Carrier Delay",
+    { name: "Carrier Delay", id: 3 },
+    { name: "Weather Delay", id: 4 },
+    { name: "NAS Delay", id: 5 },
+    { name: "Security Delay", id: 6 },
+    { name: "Late Aircraft Delay", id: 7 },
   ]);
 
   const getData = async (state) => {
     setData({});
     setCity("");
+    setState("");
     setCities([]);
     setPlaceholder("Loading...");
 
@@ -92,15 +55,25 @@ export const FlightOptimization = () => {
       headers: {
         "Content-Type": "application/json; charset=UTF-8",
       },
-      body: JSON.stringify({ queryType: 2, state: state, month: month }),
+      body: JSON.stringify({
+        queryType: 2,
+        state: state,
+        month: month,
+        sort1: sortingParams[0].id,
+        sort2: sortingParams[1].id,
+        sort3: sortingParams[2].id,
+        sort4: sortingParams[3].id,
+        sort5: sortingParams[4].id,
+      }),
     });
 
     const json = await resp.json();
     const data = formatData(json, month);
     const cities = getCities(data);
 
-    setCities(cities);
     setData(data);
+    setState(state);
+    setCities(cities);
   };
 
   const filterData = (data) => {
@@ -112,9 +85,9 @@ export const FlightOptimization = () => {
   };
 
   const onSortEnd = ({ oldIndex, newIndex }) => {
-    setSortingParams(({ items }) => ({
-      items: arrayMove(items, oldIndex, newIndex),
-    }));
+    setSortingParams((sortingParams) =>
+      arrayMove(sortingParams, oldIndex, newIndex)
+    );
   };
 
   return (
@@ -178,7 +151,7 @@ export const FlightOptimization = () => {
           <div className="col-span-1 border-l border-1 pr-2 pl-3">
             <div className="inline-flex min-w-full items-center">
               <select
-                className="border-b border-1 text-gray-500 flex-grow focus:outline-none focus:border-gray-500 focus:border-b-2 p-1 mr-4"
+                className="border-b border-1 text-gray-500 flex-grow focus:outline-none focus:border-gray-500 focus:border-b-2 p-1 mr-4 mb-2"
                 onChange={(e) =>
                   e.target.value !== "" ? getData(e.target.value) : null
                 }
@@ -217,14 +190,24 @@ export const FlightOptimization = () => {
             <div className="bg-indigo-600 rounded-md p-2 inline-flex mt-4">
               <Info className="w-7 h-7 stroke-gray-50" />
               <p className="text-gray-100 pl-2">
-                Select the delay types you want to filter by and sort them by
-                priority.
+                Choose which delay types you would like to minimize by
+                reordering the list.
               </p>
             </div>
-            <h1 className="text-xl text-gray-800 font-bold mt-4">
+            <h1 className="text-xl text-gray-800 font-bold mt-4 mb-2">
               Sorting by lowest
             </h1>
             <SortableList items={sortingParams} onSortEnd={onSortEnd} />
+            <div className="w-full flex flex-row items-center justify-center pt-4">
+              <button
+                className="mx-auto p-2 text-white text-lg bg-gradient-to-r from-cyan-500 to-blue-500 rounded-md font-semibold"
+                onClick={() => {
+                  if (state !== "") getData(state);
+                }}
+              >
+                Update Priority
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -7,10 +7,11 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  Label,
   ResponsiveContainer,
 } from "recharts";
 
-export const TrendLineChart = ({ strokeWidth, data, xkey, ykeys }) => {
+export const TrendLineChart = ({ strokeWidth, data, xkey, ykeys, ylabel }) => {
   const colors = [
     "#3b82f6",
     "#6366f1",
@@ -37,7 +38,14 @@ export const TrendLineChart = ({ strokeWidth, data, xkey, ykeys }) => {
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey={xkey} />
-        <YAxis />
+        <YAxis>
+          <Label
+            value={ylabel}
+            position="insideLeft"
+            angle={-90}
+            style={{ textAnchor: "middle", fontSize: "90%", fill: "gray" }}
+          />
+        </YAxis>
         <Tooltip />
         <Legend />
         {ykeys.map((key, i) => (

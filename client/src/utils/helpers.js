@@ -65,6 +65,7 @@ export const getMonth = () => {
     "November",
     "December",
   ];
+
   const d = new Date();
   let name = month[d.getMonth()];
   return name;
