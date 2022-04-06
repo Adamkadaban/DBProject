@@ -57,4 +57,5 @@ RIGHT JOIN (
     FROM all_data
     GROUP BY Airport, Airline, EXTRACT(MONTH FROM TakeOffDate)
 ) tmp ON adf.Airport = tmp.Airport AND adf.Airline = tmp.Airline
+WHERE adf.Airport IS NOT NULL AND adf.Airline IS NOT NULL
 ORDER BY adf.Airport, adf.Airline, tmp.FlightMonth;
