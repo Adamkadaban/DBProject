@@ -1,18 +1,61 @@
+import { useState } from "react";
 import { Navbar } from "../components/Navbar";
 import { Link } from "react-router-dom";
+import Confetti from "react-dom-confetti";
 import { ReactComponent as Airplane } from "../icons/plane.svg";
 import { ReactComponent as Globe } from "../icons/globe.svg";
 import { ReactComponent as Trend } from "../icons/trend.svg";
 
 export const Home = () => {
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [buttonPlaceholder, setButtonPlaceholder] = useState(
+    "How many tuples are in our database?"
+  );
+
+  const getRowCount = async () => {
+    setButtonPlaceholder("Loading...");
+    const resp = await fetch("http://localhost:5000/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+      body: JSON.stringify({ queryType: 7 }),
+    });
+    const json = await resp.json();
+    const { ROW_COUNT } = await json[0];
+    setButtonPlaceholder(`${ROW_COUNT} tuples`);
+    setShowConfetti(true);
+  };
+
+  const config = {
+    angle: 90,
+    spread: 360,
+    startVelocity: 40,
+    elementCount: 70,
+    dragFriction: 0.12,
+    duration: 3400,
+    stagger: "10",
+    width: "10px",
+    height: "10px",
+    perspective: "500px",
+    colors: ["#a864fd", "#29cdff", "#78ff44", "#ff718d", "#fdff6a"],
+  };
+
   return (
     <>
       <Navbar />
-      <div className="container mx-auto max-w-6xl flex flex-col gap-4 pt-12 p-4">
+      <div className="container mx-auto max-w-6xl flex flex-col gap-4 pt-12 p-4 overflow-hidden">
         <h1 className="text-4xl text-gray-600 text-center font-semibold">
           Welcome to our Project
         </h1>
-        <div className="pt-4">
+        <button
+          className="mx-auto p-2 text-white text-lg bg-gradient-to-r from-cyan-500 to-blue-500 rounded-md font-semibold border-2 border-blue-500"
+          onClick={() => getRowCount()}
+        >
+          {buttonPlaceholder}
+        </button>
+        <Confetti active={showConfetti} config={config} className="mx-auto" />
+        <div>
           <h1 className="text-2xl text-gray-500 pb-2">What we analyzed?</h1>
           <div className="flex flex-col gap-4 md:grid md:grid-cols-3">
             <Link
