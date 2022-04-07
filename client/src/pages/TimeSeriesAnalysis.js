@@ -1,8 +1,16 @@
 import React, { useState } from "react";
 import { Navbar } from "../components/Navbar";
 import { TrendLineChart } from "../components/TrendLineChart";
+import { useEffect } from "react";
+import { Query5TrendLine } from "../components/Q5TrendLine";
+import {Query4TrendLine} from "../components/Q4TrendLine";
+import {Query3TrendLine} from "../components/Q3TrendLine";
+import {Query6TrendLine} from "../components/Q6TrendLine";
+
 
 export const TimeSeriesAnalysis = () => {
+
+
   const [tab, setTab] = useState(0);
   const tabNames = [
     "Flight Delays By Airline",
@@ -10,6 +18,9 @@ export const TimeSeriesAnalysis = () => {
     "Flight Delay by Delay Cause",
     "Departing : Arriving Delays",
   ];
+
+  const analysis = ['trend1', 'trend2', 'trend3', 'trend4']
+  
   return (
     <>
       <Navbar />
@@ -42,21 +53,16 @@ export const TimeSeriesAnalysis = () => {
         </div>
         <div className="mx-auto border-solid border-[0.1px] border-gray-300 rounded-md p-2 flex flex-col items-center h-96 w-full">
           <h1 className="pb-2 font-semibold text-lg">Trend: {tabNames[tab]}</h1>
-          <TrendLineChart strokeWidth={4} />
+          {tabNames[tab] == 'Flight Delays By Airline' && <Query3TrendLine strokeWidth={4}/>}
+          {tabNames[tab] == 'Flight Delay Duration' && <Query4TrendLine strokeWidth={4}/>}
+          {tabNames[tab] == 'Flight Delay by Delay Cause' && <Query5TrendLine strokeWidth={4}/>}
+          {tabNames[tab] == 'Departing : Arriving Delays' && <Query6TrendLine strokeWidth={4}/>}
+          
         </div>
         <div className="border-solid border-[0.1px] border-gray-300 rounded-md flex flex-col p-2">
           <h1 className="font-bold text-lg">Analysis</h1>
           <p className="text-gray-500">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
-            vehicula, magna mollis tincidunt pharetra, ipsum elit finibus
-            tortor, et tempor dolor augue eu sapien. Donec id nisl ac purus
-            luctus iaculis. Nam ut libero lorem. Aenean augue neque, mattis sed
-            est sit amet, sagittis mollis lacus. Etiam vel dictum ex. Etiam
-            dictum augue at tellus placerat, sit amet tincidunt magna gravida.
-            Ut ornare, arcu in rhoncus tincidunt, lorem sapien lobortis neque,
-            et egestas nisl quam a erat. Quisque ante felis, porta nec dui
-            blandit, consectetur porta mi. Mauris fermentum laoreet dolor, id
-            volutpat tellus luctus a.
+            {analysis[tab]}
           </p>
         </div>
       </div>
