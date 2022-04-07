@@ -27,7 +27,7 @@ WITH all_data AS (
     LEFT JOIN Airport a ON f.DepartingAirportCode = a.AirportCode
     LEFT JOIN State s On a.StateCode = s.StateCode
     LEFT JOIN Airline aa ON f.CarrierCode = aa.CarrierCode
-    WHERE s.Name = '<State>'
+    WHERE s.Name = '<state>'
 ), all_data_filtered AS (
     SELECT 
         ad.Airport,
@@ -40,7 +40,6 @@ WITH all_data AS (
     FROM all_data ad
     WHERE EXTRACT(MONTH FROM ad.TakeOffDate) = <month>
     GROUP BY ad.AirportCode, ad.Airport, ad.CarrierCode, ad.Airline
-    ORDER BY 3, 4, 5, 6, 7
 )
 
 SELECT
@@ -57,4 +56,5 @@ RIGHT JOIN (
     FROM all_data
     GROUP BY Airport, Airline, EXTRACT(MONTH FROM TakeOffDate)
 ) tmp ON adf.Airport = tmp.Airport AND adf.Airline = tmp.Airline
-ORDER BY adf.Airport, adf.Airline, tmp.FlightMonth;
+WHERE adf.Airport IS NOT NULL AND adf.Airline IS NOT NULL
+ORDER BY <sort1> , <sort2> , <sort3> , <sort4> , <sort5> , adf.Airport, adf.Airline, tmp.FlightMonth;

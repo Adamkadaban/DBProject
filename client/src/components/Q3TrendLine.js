@@ -61,9 +61,12 @@
       Airline.push(WN)
       Airline.push(US)
 
+      var names = ['Alaskan Airlines', 'American Airlines', 'Delta Airlines','Envoy Air','ExpressJet Airlines', 'JetBlue Airways', 'SkyWest Airlines', 'United Airlines', 'Southwest Airlines', 'United Air Lines']
+      var colors = ['#1a7817', '#f5a742', '#cfcf00','#37eb34','#eb34e8', '#06b6d4', '#3b82f6', '#2f451f', '#f54e42', '#a83232']
 
     
-      //console.log(Airline[2][0].NAME)
+    
+      //console.log(Airline)
     
    return (
      
@@ -78,9 +81,9 @@
          <Tooltip />
          <Legend />
          
-         {Airline.map((s) => (
-            <Line dataKey="NUMBER_DELAYED_FLIGHTS" data={s} //name={s[0].NAME} key={s[0].CARRIERCODE} 
-            strokeWidth = {4}/>
+         {Airline.map((s, i) => (
+            <Line dataKey="NUMBER_DELAYED_FLIGHTS" data={s} name={names[i]} key={names[i]} 
+            strokeWidth = {4} stroke = {colors[i]}/>
           ))}
          
        </LineChart>
