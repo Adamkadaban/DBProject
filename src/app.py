@@ -30,6 +30,11 @@ def getQueryResult(userInput):
 	if queryType == 2:
 		state = userInput['state']
 		month = userInput['month']
+		sort1 = userInput["sort1"]
+		sort2 = userInput["sort2"]
+		sort3 = userInput["sort3"]
+		sort4 = userInput["sort4"]
+		sort5 = userInput["sort5"]
 	queryFile = f'./queries/query{queryType}.sql'
 
 
@@ -43,7 +48,12 @@ def getQueryResult(userInput):
 
 	if queryType == 2:
 		query = sub('<month>', str(month), query)
-		query = sub('<State>', state, query)
+		query = sub('<state>', state, query)
+		query = sub('<sort1>', str(sort1), query)
+		query = sub('<sort2>', str(sort2), query)
+		query = sub('<sort3>', str(sort3), query)
+		query = sub('<sort4>', str(sort4), query)
+		query = sub('<sort5>', str(sort5), query)
 
 	res = cursor.execute(query)
 	column_names = [i[0] for i in cursor.description]
