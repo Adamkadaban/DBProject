@@ -3,18 +3,20 @@ import os
 import re
 
 from flask import Flask, request, jsonify
-from cx_Oracle import makedsn, connect, init_oracle_client
+from flask_cors import CORS
+from cx_Oracle import makedsn, connect
 from pickle import load, dump, HIGHEST_PROTOCOL
 from re import sub
 
+'''
 try:
 	init_oracle_client(lib_dir='c:\Program Files\Oracle')
 except Exception as e:
 	print(e)
 	exit(-1)
+'''
 
-
-with open('creds.config.txt') as fin:
+with open('creds.config') as fin:
 	ORACLE_USERNAME = fin.readline().rstrip()
 	ORACLE_PASSWD = fin.readline().rstrip()
 
@@ -63,6 +65,7 @@ def getQueryResult(userInput):
 
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route("/api", methods=['POST'])
 def api():
