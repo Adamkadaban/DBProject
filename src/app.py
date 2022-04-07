@@ -1,11 +1,20 @@
 #!/bin/python3
+import os
+import re
+
 from flask import Flask, request, jsonify
-from flask_cors import CORS
-from cx_Oracle import makedsn, connect
+from cx_Oracle import makedsn, connect, init_oracle_client
 from pickle import load, dump, HIGHEST_PROTOCOL
 from re import sub
 
-with open('creds.config') as fin:
+try:
+	init_oracle_client(lib_dir='c:\Program Files\Oracle')
+except Exception as e:
+	print(e)
+	exit(-1)
+
+
+with open('creds.config.txt') as fin:
 	ORACLE_USERNAME = fin.readline().rstrip()
 	ORACLE_PASSWD = fin.readline().rstrip()
 
@@ -44,12 +53,10 @@ def getQueryResult(userInput):
 
 
 app = Flask(__name__)
-CORS(app)
 
 @app.route("/api", methods=['POST'])
 def api():
 	userData = request.get_json(force=True)
-	print(userData)
 	return jsonify(getQueryResult(userData)), 200, {'ContentType':'application/json'} 
 
 
@@ -59,13 +66,13 @@ if __name__ == "__main__":
 			queryCache = load(fin)
 		print("[*] Loaded file")
 	except FileNotFoundError:
-		print("[*] Cache not yet created. Making a new file")
+		pass
 	except EOFError:
-		print("[*] Cache is empty. Writing to Cache now.")
+		pass
 	try:
 		app.run()
 	except KeyboardInterrupt:
-		print("[*] Exiting app")
+		pass
 
 	# print(queryCache)
 	with open('cachedResults', 'wb') as fout:
