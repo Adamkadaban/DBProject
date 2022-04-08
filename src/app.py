@@ -8,13 +8,11 @@ from cx_Oracle import makedsn, connect
 from pickle import load, dump, HIGHEST_PROTOCOL
 from re import sub
 
-'''
 try:
+	from cx_Oracle import init_oracle_client
 	init_oracle_client(lib_dir='c:\Program Files\Oracle')
-except Exception as e:
-	print(e)
-	exit(-1)
-'''
+except:
+	pass
 
 with open('creds.config') as fin:
 	ORACLE_USERNAME = fin.readline().rstrip()
