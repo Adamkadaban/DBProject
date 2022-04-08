@@ -10,7 +10,7 @@ from re import sub
 
 try:
 	from cx_Oracle import init_oracle_client
-	init_oracle_client(lib_dir='c:\Program Files\Oracle')
+	init_oracle_client(lib_dir='c:\\Program Files\\Oracle')
 except:
 	pass
 
