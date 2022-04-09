@@ -4,6 +4,9 @@ import { MapChart } from "../components/MapChart";
 
 export const GeospatialAnalysis = () => {
   const [year, setYear] = useState(2015);
+  const [flightDirection, setflightDirection] = useState(true)
+  const [dataFilter, setdataFilter] = useState(true)
+  
   return (
     <div className="overflow-x-hidden">
       <Navbar />
@@ -31,6 +34,7 @@ export const GeospatialAnalysis = () => {
                 type="checkbox"
                 id="toggle-switch"
                 className="cursor-pointer m-1 h-5 w-10 rounded-full appearance-none bg-indigo-100 border-2 border-indigo-500 checked:bg-indigo-300 transition duration-200 relative"
+                onChange={(e) => setdataFilter(!dataFilter)}
               />
               <h1 className="text-gray-500 font-light">Number of Delays</h1>
             </div>
@@ -57,17 +61,20 @@ export const GeospatialAnalysis = () => {
               </ul>
             </div>
             <div className="flex flex-row items-center gap-1">
-              <input type="checkbox" />
-              <h1 className="text-gray-500 font-light pr-2">Delays</h1>
-              <input type="checkbox" />
-              <h1 className="text-gray-500 font-light pr-2">Diverts</h1>
-              <input type="checkbox" />
-              <h1 className="text-gray-500 font-light">Cancellations</h1>
+            <h1 className="text-gray-500 font-light">Arriving</h1>
+              <input
+                type="checkbox"
+                id="toggle-switch"
+                className="cursor-pointer m-1 h-5 w-10 rounded-full appearance-none bg-indigo-100 border-2 border-indigo-500 checked:bg-indigo-300 transition duration-200 relative"
+                onChange={(e) => setflightDirection(!flightDirection)}
+              />
+              <h1 className="text-gray-500 font-light">Departing</h1>
+              
             </div>
           </div>
         </div>
         <div className="border-solid border-[0.1px] border-gray-300 rounded-md flex flex-col items-center p-1">
-          <MapChart />
+          <MapChart YEAR = {year} direction = {flightDirection} dataFilter = {dataFilter}/>
         </div>
       </div>
     </div>
