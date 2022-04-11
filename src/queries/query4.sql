@@ -1,6 +1,11 @@
 -- Query 4
+
 -- Used on the Time Series Analysis Page: Flight Delay Duration
 -- Finds the Mean, Median, Min, Max, 25th Percentile, and 75th Percentile of total Flight Delay Duration by year
+
+-- Explanation of query
+-- 1) First the data is filtered for flights that were delayed
+-- 2) Next the mean, median, min, max, and percentiles are calculated for the total flight delay duration
 
 SELECT
     DISTINCT FlightYear,

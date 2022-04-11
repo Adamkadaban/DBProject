@@ -1,4 +1,5 @@
 -- Query 7
+
 -- Used on the home page
 -- Gets the number of tuples in the database
 

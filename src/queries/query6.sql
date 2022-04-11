@@ -1,6 +1,12 @@
 -- Query 6
+
 -- Used on the Time Series Analysis Page: Departing to Arriving Delays
 -- Finds the ratio of the number of departing delays to arriving delays for the top 10 most busy airports by year
+
+-- 1) Find the arriving flights that were delayed
+-- 2) Find the departing flights that were delayed
+-- 3) Group by airport
+-- 4) Calculate ratio of departing to arriving delays for each airport
 
 WITH Arriving_Flights AS (
     SELECT

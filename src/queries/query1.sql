@@ -1,8 +1,21 @@
 -- Query 1
+
 -- Used on the Geospatial Analysis Page
+-- Only considers flights that were actually delayed
 -- 1) Finds the average delay time and # of delays, by year, for each state where a flight departed from
 -- 2) Finds the average delay time and # of delays, by year,  for each state where a flight arrived at
--- Only considers flights that were actually delayed
+
+-- Explanation of query:
+-- 1) First all the flights that departed from a particular airport are selected
+-- 2) Next all the flights that arrived at a particular airport are selected
+-- 3) For the departing and arriving flights, the following attributes are queried
+--      1) state code
+--      2) state name
+--      3) flight year
+--      4) number of delays 
+--      5) average total delay duration
+-- 4) Finally the departing flight delay information is combined with the arriving flight delay information
+
 
 WITH departing_flights AS (
     SELECT f.*, s.*,

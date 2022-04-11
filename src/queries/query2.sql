@@ -1,9 +1,15 @@
 -- Query 2
+
 -- Used on the Flight Optimization page
 -- Finds the airports and airlines in a given location as well as the average delay, by cause, for a given month
 -- Replace <state> with the correct state
 -- Replace <month> with the correct flight month
 -- Replace the order by with the correct order of priority
+
+-- Explanation of query:
+-- 1) First the Flight, Airport, State, and Airline tables are combined
+-- 2) Next the flights are filtered for those that occurred in a particular month and the delay stats by state, airline are calculated
+-- 3) Next the information for a particular airline's total delay over time is joined to this information
 
 WITH all_data AS (
     SELECT 

@@ -1,6 +1,7 @@
 -- Query 5
+
 -- Used on the Time Series Analysis Page: Flight Delays by Cause
--- Finds the number of flights that wee delayed, each year, by the different delay causes
+-- Finds the number of flights that were delayed, each year, by the different delay causes
 
 SELECT
     EXTRACT(YEAR FROM TakeOffDate) AS FlightYear,

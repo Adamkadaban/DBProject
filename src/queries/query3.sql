@@ -1,6 +1,12 @@
 -- Query 3
+
 -- Used on the Time Series Analysis Page: Flight Delays By Airline
 -- Finds the number of delayed flights, by year, for the top 10 airlines with the most flights
+
+-- Explanation of query
+-- 1) First the 10 most popular airlines are selected based on the number of flights that airline had
+-- 2) Next the flights for these top 10 most popular airlines is selected
+-- 3) Finally the number of delayed flights is calculated by year for each of these airlines
 
 WITH Top_10_Most_Popular_Airlines AS (
     SELECT CarrierCode
