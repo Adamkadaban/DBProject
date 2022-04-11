@@ -19,7 +19,10 @@ export const TimeSeriesAnalysis = () => {
     "Departing : Arriving Delays",
   ];
 
-  const analysis = ['trend1', 'trend2', 'trend3', 'trend4']
+  const analysis = ['This trend aims to answer the question: How many domestic flight delays did each airline have from 2010 until 2020? We wanted to develop an understanding of which airlines are the most reliable and have proven over time to have on-time flights. The interesting trends to note here are that regional carriers such as Alaskan Airlines and Envoy Air tend to have fewer delays than more trans-American carriers such as Southwest and American. In addition, the outlier, Southwest Airlines, has had a history of technical issues and nationwide outages in its backend systems which has led to a much higher number of delays versus its peers. ',
+    'This trend aims to provide a holistic answer to whether flight delays have increased or decreased over the past decade. Looking at the data, it is clear that nearly every data metric has progressively increased, highlighting that increased air travel has not been effectively combatted by advances in airline and airport technologies. However, it is interesting to note the slight dip in delay times in 2020, which corresponds to diminished air travel in the US due to COVID-19.',
+    'This trend aims to find the total number of flight delay minutes that can be attributed to each flight delay cause for each year from 2010 to 2020. The keys points are the outliers in the data for 2015 and 2020, along with the large gap between NAS (Preventable) and Late Aircraft Delays versus Security and Weather-Related Delays. The outliers in 2015 were due to an FAA software update glitch and 2020 was due to reduced traffic from COVD-19. The difference between the various delays shows us that the vast majority of the delays are preventable.',
+    'This additional trend aims to find which airports are most efficient in mitigating arriving versus departing delays. We see some airports, such as Charlotte Douglas, have consistently more departing delays than arriving delays, highlighting airstrip crowding and boarding issues along with its use as a connecting airport. Other airports, such as San Francisco, have much more arriving delays because they serve mostly as the final destination for visitors, not as hubs for connecting flights. ']
   
   return (
     <>
