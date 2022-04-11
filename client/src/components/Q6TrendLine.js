@@ -75,7 +75,7 @@
        >
          <CartesianGrid strokeDasharray="3 3" />
          <XAxis dataKey="FLIGHTYEAR" allowDuplicatedCategory={false}/>
-         <YAxis />
+         <YAxis domain={[.7, 1.5]} />
          <Tooltip />
          <Legend />
          
