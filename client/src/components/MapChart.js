@@ -3,14 +3,58 @@
  * https://www.react-simple-maps.io/examples/usa-counties-choropleth-quantile/
  */
 
- import React, { useState, useEffect } from "react";
+ import React, { memo, useState, useEffect } from "react";
  import { ComposableMap, Geographies, Geography } from "react-simple-maps";
  import { scaleQuantile } from "d3-scale";
  import { csv } from "d3-fetch";
+
  
  const geoUrl = "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json";
+
+ const rounded = num => {
+  if (num > 1000000000) {
+    return Math.round(num / 100000000) / 10 + "Bn";
+  } else if (num > 1000000) {
+    return Math.round(num / 100000) / 10 + "M";
+  } else {
+    return Math.round(num / 100) / 10 + "K";
+  }
+};
+
+const arrivingOrDeparting = m => {
+  // {"ARRIVING_FLIGHTS_AVERAGE_DELAY_TIME":55.046,"ARRIVING_FLIGHTS_DELAYS_COUNT":862,"DEPARTING_FLIGHTS_AVERAGE_DELAY_TIME":69.408,"DEPARTING_FLIGHTS_DELAYS_COUNT":692,"FLIGHTYEAR":2015,"NAME":"Montana","STATECODE":"MT"}
+  // ${cur.NAME} — ${rounded(cur.ARRIVING_FLIGHTS_DELAYS_COUNT)} ${arrivingOrDeparting(props.direction)} Delays
+  var dir = "";
+  var td = "";
+
+  if(!m.dataFilter){
+    // num delays
+    if(!m.direction){
+      return `${m.ARRIVING_FLIGHTS_DELAYS_COUNT} average delay (minutes) for arriving flights`
+    }
+    else{
+      return `${m.DEPARTING_FLIGHTS_DELAYS_COUNT} average delay (minutes) for departing flights`
+    }
+
+  }
+  else{
+    // avg delay time
+    if(!m.direction){
+      return `${m.ARRIVING_FLIGHTS_AVERAGE_DELAY_TIME} arriving flights`
+    }
+    else{
+      return `${m.DEPARTING_FLIGHTS_AVERAGE_DELAY_TIME} departing flights`
+
+    }
+  }
+
+  // "{num} arriving/departing flights" (2)
+
+  // "{num} average delay for arriving/departing flights" (2)
+};
+
  
- export const MapChart = (props) => {
+export const MapChart = (props) => {
    const [query1Data, setQuery1Data] = useState([]);
    const [filter, setFilter] = useState("ARRIVING_FLIGHTS_AVERAGE_DELAY_TIME")
   
@@ -116,9 +160,9 @@
        "#0e7490",
        "#155e75",
      ]);
- 
+  
    return (
-     <ComposableMap projection="geoAlbersUsa">
+     <ComposableMap data-tip="" projection="geoAlbersUsa">
        <Geographies geography={geoUrl}>
          {({ geographies }) =>
            geographies.map((geo) => {
@@ -128,6 +172,14 @@
                  key={geo.rsmKey}
                  geography={geo}
                  fill={cur ? colorScale(cur[filter]) : "#EEE"}
+                 onMouseEnter={() => {
+                    const { NAME, POP_EST } = geo.properties;
+
+                    props.setTooltipContent(arrivingOrDeparting(cur));
+                  }}
+                  onMouseLeave={() => {
+                    props.setTooltipContent("");
+                  }}
                 
                />
              );
@@ -137,3 +189,4 @@
      </ComposableMap>
    );
  };
+

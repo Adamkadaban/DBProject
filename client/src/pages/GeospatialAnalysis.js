@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { Navbar } from "../components/Navbar";
 import { MapChart } from "../components/MapChart";
+import ReactDOM from "react-dom";
+import ReactTooltip from "react-tooltip";
+
 
 export const GeospatialAnalysis = () => {
   const [year, setYear] = useState(2015);
   const [flightDirection, setflightDirection] = useState(true)
   const [dataFilter, setdataFilter] = useState(true)
-  
+  const [content, setContent] = useState("");
   return (
     <div className="overflow-x-hidden">
       <Navbar />
@@ -74,7 +77,8 @@ export const GeospatialAnalysis = () => {
           </div>
         </div>
         <div className="border-solid border-[0.1px] border-gray-300 rounded-md flex flex-col items-center p-1">
-          <MapChart YEAR = {year} direction = {flightDirection} dataFilter = {dataFilter}/>
+          <MapChart YEAR = {year} direction = {flightDirection} dataFilter = {dataFilter} setTooltipContent={setContent}/>
+          <ReactTooltip>{content}</ReactTooltip>
         </div>
       </div>
     </div>
