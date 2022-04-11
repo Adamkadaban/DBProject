@@ -21,30 +21,27 @@
   }
 };
 
-const arrivingOrDeparting = m => {
+const arrivingOrDeparting = (m, p) => {
   // {"ARRIVING_FLIGHTS_AVERAGE_DELAY_TIME":55.046,"ARRIVING_FLIGHTS_DELAYS_COUNT":862,"DEPARTING_FLIGHTS_AVERAGE_DELAY_TIME":69.408,"DEPARTING_FLIGHTS_DELAYS_COUNT":692,"FLIGHTYEAR":2015,"NAME":"Montana","STATECODE":"MT"}
   // ${cur.NAME} — ${rounded(cur.ARRIVING_FLIGHTS_DELAYS_COUNT)} ${arrivingOrDeparting(props.direction)} Delays
-  var dir = "";
-  var td = "";
 
-  if(!m.dataFilter){
+  if(!p.dataFilter){
     // num delays
-    if(!m.direction){
-      return `${m.ARRIVING_FLIGHTS_DELAYS_COUNT} average delay (minutes) for arriving flights`
+    if(!p.direction){
+      return `${m.DEPARTING_FLIGHTS_DELAYS_COUNT} average delay (minutes) for departing flights`
     }
     else{
-      return `${m.DEPARTING_FLIGHTS_DELAYS_COUNT} average delay (minutes) for departing flights`
+      return `${m.ARRIVING_FLIGHTS_DELAYS_COUNT} average delay (minutes) for arriving flights`
     }
 
   }
   else{
     // avg delay time
-    if(!m.direction){
-      return `${m.ARRIVING_FLIGHTS_AVERAGE_DELAY_TIME} arriving flights`
+    if(!p.direction){
+      return `${m.DEPARTING_FLIGHTS_AVERAGE_DELAY_TIME} departing flights`
     }
     else{
-      return `${m.DEPARTING_FLIGHTS_AVERAGE_DELAY_TIME} departing flights`
-
+      return `${m.ARRIVING_FLIGHTS_AVERAGE_DELAY_TIME} arriving flights`
     }
   }
 
@@ -172,10 +169,11 @@ export const MapChart = (props) => {
                  key={geo.rsmKey}
                  geography={geo}
                  fill={cur ? colorScale(cur[filter]) : "#EEE"}
+                 style={{ hover: {opacity: 0.2, outline: "none"}}}
                  onMouseEnter={() => {
                     const { NAME, POP_EST } = geo.properties;
 
-                    props.setTooltipContent(arrivingOrDeparting(cur));
+                    props.setTooltipContent(arrivingOrDeparting(cur, props));
                   }}
                   onMouseLeave={() => {
                     props.setTooltipContent("");
