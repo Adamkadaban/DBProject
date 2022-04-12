@@ -25,7 +25,7 @@ const arrivingOrDeparting = (m, p) => {
   // {"ARRIVING_FLIGHTS_AVERAGE_DELAY_TIME":55.046,"ARRIVING_FLIGHTS_DELAYS_COUNT":862,"DEPARTING_FLIGHTS_AVERAGE_DELAY_TIME":69.408,"DEPARTING_FLIGHTS_DELAYS_COUNT":692,"FLIGHTYEAR":2015,"NAME":"Montana","STATECODE":"MT"}
   // ${cur.NAME} — ${rounded(cur.ARRIVING_FLIGHTS_DELAYS_COUNT)} ${arrivingOrDeparting(props.direction)} Delays
 
-  if(!p.dataFilter){
+  if(p.dataFilter){
     // num delays
     if(!p.direction){
       return `${m.DEPARTING_FLIGHTS_DELAYS_COUNT} average delay (minutes) for departing flights`
